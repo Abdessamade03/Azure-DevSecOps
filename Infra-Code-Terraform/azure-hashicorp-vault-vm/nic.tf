@@ -2,8 +2,8 @@ resource "azurerm_public_ip" "public-ip" {
   name                = var.ip-name
   resource_group_name = azurerm_resource_group.rs-group.name
   location            = azurerm_resource_group.rs-group.location
-  allocation_method   = "Static"    # Use Static for Standard SKU
-  sku                 = "Standard"  # Ensure the SKU is Standard
+  allocation_method   = "Dynamic"    # Use Static for Standard SKU
+  sku                 = "Basic"    # Change le SKU en "Basic"
 }
 
 resource "azurerm_network_interface" "nic" {

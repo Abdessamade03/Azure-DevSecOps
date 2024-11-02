@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      source = "hashicorp/azurerm"
+      version = "4.5.0"
     }
   }
 }
@@ -13,7 +13,7 @@ provider "azurerm" {
 }
 
 provider "vault" {
-  address          = "http://13.93.146.203:8200"
+  address          = "http://13.93.183.55:8200"
   skip_child_token = true
   alias = "approle"
   auth_login {
@@ -28,6 +28,6 @@ provider "vault" {
 
 provider "vault" {
   alias            = "main"
-  address          = "http://13.93.146.203:8200"
+  address          = "http://13.93.183.55:8200"
   skip_child_token = true
 }

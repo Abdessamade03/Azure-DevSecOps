@@ -1,9 +1,10 @@
+image: hashicorp/terraform:latest
+
 variables:
   TF_IN_AUTOMATION: "true"
   TF_ROOT: ${CI_PROJECT_DIR}
   ENV: variables
   TERRAFORM_ACTION: apply
-
 
 before_script:
   - terraform --version
@@ -20,26 +21,23 @@ Validating the Terraform Configuration:
     - aks
   script:
     - terraform validate
-  
 
 Running the Plan:
   stage: plan
   tags:
     - aks
   script:
-    - terraform plan -var="role_id=$VAULT_ROLE_ID" -var="secret_id=$VAULT_SECRET_ID" -var-file="$ENV.tfvars"
-
+    - terraform plan -var="role_id=$VAULT_ROLE_ID" -var="secret_id=$VAULT_SECRET_ID" -var-file="$ENV.tfvars" -lock=false
 
 Running the Apply:
   stage: action
   tags:
-    - aks
+    - aks 
   script:
     - if [[ "$TERRAFORM_ACTION" == "apply" ]]; then
-        terraform apply -var="role_id=${VAULT_ROLE_ID}" -var="secret_id=${VAULT_SECRET_ID}" -auto-approve -var-file=$ENV.tfvars;
+        terraform apply -var="role_id=${VAULT_ROLE_ID}" -var="secret_id=${VAULT_SECRET_ID}" -auto-approve -var-file=$ENV.tfvars -lock=false;
       fi
   when: manual
-
   only:
     variables:
       - $TERRAFORM_ACTION == "apply"
@@ -50,10 +48,9 @@ Running the Destroy:
     - aks
   script:
     - if [[ "$TERRAFORM_ACTION" == "destroy" ]]; then
-        terraform destroy -var="role_id=${VAULT_ROLE_ID}" -var="secret_id=${VAULT_SECRET_ID}" -auto-approve -var-file=$ENV.tfvars;
+        terraform destroy -var="role_id=${VAULT_ROLE_ID}" -var="secret_id=${VAULT_SECRET_ID}" -auto-approve -var-file=$ENV.tfvars -lock=false;
       fi
   when: manual
-  
   only:
     variables:
       - $TERRAFORM_ACTION == "destroy"

@@ -5,7 +5,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   dns_prefix          = "demok8s"
   default_node_pool {
     name       = "agentpool"
-    vm_size    = "Standard_D2_v2"
+    vm_size    = "Standard_D2s_v3"
     node_count = "1"
   }
 
@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       key_data = file(var.ssh_key)
     }
   }
-
+#
   network_profile {
     network_plugin    = "kubenet"
     load_balancer_sku = "standard"
